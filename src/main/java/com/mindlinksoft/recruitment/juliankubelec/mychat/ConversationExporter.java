@@ -39,9 +39,10 @@ public class ConversationExporter {
         if(getFilterUserId() !=null) {
             System.out.println("Showing messages with userId:" + filterUserId);
         }
-        else if(getFilterKeyword() !=null) {
+        if(getFilterKeyword() !=null) {
             System.out.println("Showing messages with keyword:" + filterKeyword);
-        }else if(getBlacklist() != null) {
+        }
+        if(getBlacklist() != null) {
             String msg = "Hiding messages with following word(s):";
             StringBuilder sb = new StringBuilder(msg);
             int i = 0;
@@ -56,9 +57,9 @@ public class ConversationExporter {
                 }
                 i++;
             }
-            System.out.println(msg + sb.toString());
+            System.out.println(sb.toString());
         }
-        else if(includeReport){
+        if(includeReport){
             System.out.println("Including activity report to output");
         }
         System.out.println("Conversation exported from '" + inputFilePath + "' to '" + outputFilePath);
@@ -174,25 +175,25 @@ public class ConversationExporter {
     private Conversation configureConversation(Conversation c) {
         ConversationBuilder cb = new ConversationBuilder(c);
         if(filterUserId !=null) {
-            return cb
+            cb = cb
                     .filter()
-                        .byUser(filterUserId)
-                    .build();
+                        .byUser(filterUserId);
+
         }
-        else if(filterKeyword !=null) {
-            return cb
+        if(filterKeyword !=null) {
+            cb = cb
                     .filter()
-                        .byKeyword(filterKeyword)
-                    .build();
+                        .byKeyword(filterKeyword);
         }
-        else if(blacklist != null) {
+        if(blacklist != null) {
+            Conversation conversation = cb.build(); //Get the updated conversation if userId and keyword is used
             for(String word: blacklist) {
-                c = new ConversationBuilder(c)
+                conversation = new ConversationBuilder(conversation)
                     .redact()
                         .byBlacklistedWord(word)
                     .build();
             }
-            return c;
+            cb = new ConversationBuilder(conversation);
         }
         return cb.build();
     }

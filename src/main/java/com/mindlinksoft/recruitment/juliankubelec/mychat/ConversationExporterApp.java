@@ -34,12 +34,13 @@ public class ConversationExporterApp {
             if(parseResult.hasMatchedOption(configuration.userOpt)) {
                 exporter.setFilterUserId(configuration.filterUserId);
             }
-            else if(parseResult.hasMatchedOption(configuration.filterKeyword)) {
+            if(parseResult.hasMatchedOption(configuration.keywordOpt)) {
                 exporter.setFilterKeyword(configuration.filterKeyword);
             }
-            else if(parseResult.hasMatchedOption(configuration.blacklistOpt)) {
+            if(parseResult.hasMatchedOption(configuration.blacklistOpt)) {
                 exporter.setBlacklist(configuration.blacklist);
-            }else if(parseResult.hasMatchedOption(configuration.reportOpt)){
+            }
+            if(parseResult.hasMatchedOption(configuration.reportOpt)){
                 exporter.setIncludeReport(configuration.reportIncluded);
             }
 
